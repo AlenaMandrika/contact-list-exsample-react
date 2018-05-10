@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Contact from './components/contactCard/contactCard'
+import Timer from './components/Timer/timer'
+
 import AniLorak from './assets/images/AniLorak.jpeg'
 import Anja from './assets/images/Anja.jpeg'
 import Natasha from './assets/images/Natasha.jpeg'
@@ -48,7 +50,9 @@ class App extends Component {
       isVisible: true,
       isHidden: false,
 
-      value: 0
+      value: 0,
+
+      mounted: false
     }
 
     this.handleSearch = this.handleSearch.bind(this)
@@ -56,6 +60,7 @@ class App extends Component {
     this.deleteContactList = this.deleteContactList.bind(this)
     this.handleDecrement = this.handleDecrement.bind(this)
     this.handleIncrement = this.handleIncrement.bind(this)
+    this.handleMountOrUnmount = this.handleMountOrUnmount.bind(this)
   }
 
   handleSearch (event) {
@@ -101,15 +106,33 @@ class App extends Component {
     });
   }
 
+  handleMountOrUnmount (){
+    this.setState ({
+      mounted: !this.state.mounted
+    })
+  }
+
   render() {
     return (
       <div className="contacts">
-        <div className='counter-block'>
-          <button onClick={this.handleDecrement} className='btn-counter'>-</button>
-          <h1>{this.state.value}</h1>
-          <button onClick={this.handleIncrement} className='btn-counter'>+</button>
+        <div className="container timer-counter">
+          <div>
+            {
+              this.state.mounted
+                ? <Timer />
+                : false
+            }
+            <button className="btn-counter" onClick={this.handleMountOrUnmount}>
+              {this.state.mounted ? "Unmount Timer" : "Mount Timer"}
+            </button>
+          </div>
+          <div className='counter-block'>
+            <button onClick={this.handleDecrement} className='btn-counter'>-</button>
+            <h1>{this.state.value}</h1>
+            <button onClick={this.handleIncrement} className='btn-counter'>+</button>
+          </div>
         </div>
-        <div>
+        <div className="container btn-contact">
           <button className='btnAddContactList' onClick={this.addContactList} hidden={!this.state.isVisible}>add contact list</button>
         </div>
         <div className='block-contact' hidden={!this.state.isHidden}>
